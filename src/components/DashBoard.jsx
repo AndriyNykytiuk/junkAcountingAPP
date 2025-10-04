@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import EquipmentList from './EquipmentList'; 
 
-const Dashboard = ({ responseData, onBrigadeSelect, onEquipmentSelect }) => {
+const Dashboard = ({ responseData, onBrigadeSelect}) => {
   const [isOpen, setIsOpen] = useState(false);
    const [selectedBrigade, setSelectedBrigade] = useState(null);
 

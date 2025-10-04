@@ -20,7 +20,7 @@ const TestingList = ({ brigadeId, equipmentId }) => {
     setIsLoading(true);
     try {
       const sessionId = localStorage.getItem('sessionId');
-      const res = await fetch(`http://rasp.ivkeen.keenetic.link/api/testing/brigade/${brigadeId}/equipment/${equipmentId}`, {
+      const res = await fetch(`https://rasp.ivkeen.keenetic.link/api/testing/brigade/${brigadeId}/equipment/${equipmentId}`, {
         method: 'GET',
         headers: {
           'session-id': sessionId,
@@ -40,10 +40,13 @@ const TestingList = ({ brigadeId, equipmentId }) => {
     fetchTestingData();
   }, [brigadeId, equipmentId]);
 
-  const handleSave = async (id) => {
+console.log('TestingList props - brigadeId:', brigadeId, 'equipmentId:', equipmentId);
+
+  const handleSave = async () => {
+  
     try {
       const sessionId = localStorage.getItem('sessionId');
-      const res = await fetch(`http://rasp.ivkeen.keenetic.link/api/testing/brigade/${brigadeId}/equipment/${equipmentId}`, {
+      const res = await fetch(`https://rasp.ivkeen.keenetic.link/api/testing/brigade/${brigadeId}/equipment/${equipmentId}`, {
         method: 'PUT',
         headers: {
           'session-id': sessionId,
@@ -85,7 +88,7 @@ const TestingList = ({ brigadeId, equipmentId }) => {
 
   return (
     <div className="mx-auto w-full p-4">
-      <h2 className="text-3xl text-[#202955] text-center font-bold mb-8">Результати випробувань</h2>
+      <h2 className="text-3xl text-[#202955] text-center font-bold mb-8">Результати тестування</h2>
       <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_auto] gap-5 text-[#202955] text-center mb-4 font-bold border-b pb-2">
         <p><strong>Інвентарний<br />номер:</strong></p>
         <p><strong>Дата<br />Випробування:</strong></p>
@@ -127,7 +130,7 @@ const TestingList = ({ brigadeId, equipmentId }) => {
                 className="border px-1 py-1 rounded "
               />
               <button
-                onClick={() => handleSave(item.testingId)}
+                onClick={handleSave}
                 className="text-[#202955] text-3xl px-3 py-1 rounded cursor-pointer "
               >
                 <MdOutlineSaveAs />
@@ -159,7 +162,7 @@ const TestingList = ({ brigadeId, equipmentId }) => {
                     url: item.url || '',
                   });}
                 }>
-                <RiEdit2Line className='cursor-pointer' />
+                <RiEdit2Line className='cursor-p' />
               </button>
             </li>
           )

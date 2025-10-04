@@ -10,11 +10,11 @@ const App = () => {
   const [selectedBrigadeId, setSelectedBrigadeId] = useState(null);
   const [selectedEquipmentId, setSelectedEquipmentId] = useState(null);
 
+  
   const isSuperAdmin = Array.isArray(responseData?.detachments);
-  const isRegularUser = responseData?.brigadeId && !isSuperAdmin;
 
   useEffect(() => {
-    if (isRegularUser) {
+    if (responseData?.brigadeId) {
       setSelectedBrigadeId(responseData.brigadeId);
     }
   }, [responseData]);
@@ -28,19 +28,29 @@ const App = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 ">
+    <div className="min-h-screen bg-[#dedede] ">
       <Header />
-      <div className="flex gap-4 p-5 mx-auto container">
-       <div className='flex flex-col '>
-         {isSuperAdmin && (
+      <div className="flex gap-4 p-5">
+        <div className=" flex flex-col items-center ">
+            {/* якщо brigadeId прийшов з логіну — не показуємо Dashboard */}
+        {isSuperAdmin && (
+            <Dashboard
+              responseData={responseData}
+              onBrigadeSelect={setSelectedBrigadeId}
+              onEquipmentSelect={setSelectedEquipmentId}
+            />
+          )}
+
+        {!responseData.brigadeId && (
           <Dashboard
             responseData={responseData}
             onBrigadeSelect={setSelectedBrigadeId}
-            onEquipmentSelect={setSelectedEquipmentId}
+           
           />
         )}
         <Aside onEquipmentSelect={setSelectedEquipmentId} />
-       </div>
+        </div>
+        
         <div className="flex-1">
           <TestPole
             brigadeId={selectedBrigadeId}
@@ -51,6 +61,5 @@ const App = () => {
     </div>
   );
 };
-
 
 export default App;
