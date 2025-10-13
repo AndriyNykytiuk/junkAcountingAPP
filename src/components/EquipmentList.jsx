@@ -17,7 +17,7 @@ const EquipmentList = ({ onEquipmentSelect }) => {
     const fetchEquipments = async () => {
       try {
         const sessionId = localStorage.getItem('sessionId');
-        const res = await fetch('https://rasp.ivkeen.keenetic.link/api/testing/equipments', {
+        const res = await fetch('http://rasp.ivkeen.keenetic.link/api/testing/equipments', {
           method: 'GET',
           headers: {
             'session-id': sessionId,
@@ -53,16 +53,16 @@ const EquipmentList = ({ onEquipmentSelect }) => {
 
   return (
     <div className="max-w-md mx-auto p-4">
-      <h2 className={`text-xl text-center cursor-pointer text-[#202955] font-bold mb-4 p-2 rounded-[10px] hover:border-[1px] hover:rounded-[10px] ${testingList ? 'bg-red-[100] border-[2px] bg-[#203955] text-white text-center p-2 rounded-[10px]' : ''}`} onClick={openTestingList}>Випробування</h2>
+      <h2 className={`text-xl text-center cursor-pointer  font-bold mb-4 p-2 border-[1px] hover:translate-x-1 transition-all duration-200 rounded-[10px] hover:border-[1px] hover:rounded-[10px] hover:text-[##fcd600] ${testingList ? 'bg-red-[100] border-[2px] bg-[#203955] text-white text-center p-2 rounded-[10px]' : ''}`} onClick={openTestingList}>Випробування</h2>
       {error && <p className="text-red-500">{error}</p>}
         {testingList && (      
             <ul className="space-y-2">
         {equipments.map((item) => (
           <li
             key={item.id}
-            className={`cursor-pointer text-center px-4 py-2 rounded ${
-              item.id === selectedEquipmentId ? 'bg-[#fcd600]' : 'bg-gray-100'
-            } hover:bg-[#fcf2bf]`}
+            className={`cursor-pointer text-center px-4 py-2 rounded transform transition-all duration-200
+              ${item.id === selectedEquipmentId ? 'bg-[#fcd600] text-xl font-bold translate-x-4' : 'bg-gray-100 hover:translate-x-4'}
+            `}
             onClick={() => handleEquipmentSelect(item.id)}
           >
             {item.name}

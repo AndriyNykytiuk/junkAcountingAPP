@@ -4,11 +4,14 @@ import Dashboard from './components/DashBoard';
 import Aside from './components/Aside';
 import TestPole from './components/TestPole';
 import Header from './components/Header';
+import NextTestingChecker from './components/NextDateChecker';
 
 const App = () => {
   const [responseData, setResponseData] = useState(null);
   const [selectedBrigadeId, setSelectedBrigadeId] = useState(null);
   const [selectedEquipmentId, setSelectedEquipmentId] = useState(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(Date.now());
+
 
   
   const isSuperAdmin = Array.isArray(responseData?.detachments);
@@ -21,7 +24,7 @@ const App = () => {
 
   if (!responseData) {
     return (
-      <div className="min-h-screen bg-[#dedede] mx-auto container">
+      <div className="min-h-screen bg-[#dedede] ">
         <LoginForm onLogin={setResponseData} />
       </div>
     );
@@ -30,7 +33,7 @@ const App = () => {
   return (
     <div className="min-h-screen bg-[#dedede] ">
       <Header />
-      <div className="flex gap-4 p-5">
+      <div className="flex gap-4 p-5 ">
         <div className=" flex flex-col items-center ">
             {/* якщо brigadeId прийшов з логіну — не показуємо Dashboard */}
         {isSuperAdmin && (
@@ -52,10 +55,16 @@ const App = () => {
         </div>
         
         <div className="flex-1">
+          <NextTestingChecker brigadeId={selectedBrigadeId} refreshTrigger={refreshTrigger} />
           <TestPole
             brigadeId={selectedBrigadeId}
             equipmentId={selectedEquipmentId}
+            setRefreshTrigger={setRefreshTrigger}
+            refreshTrigger={refreshTrigger}
+            responseData={responseData}
+            isSuperAdmin={isSuperAdmin}
           />
+
         </div>
       </div>
     </div>

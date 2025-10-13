@@ -15,12 +15,12 @@ const Dashboard = ({ responseData, onBrigadeSelect}) => {
   };
 
   return (
-    <div className="w-full mx-auto p-4 bg-white rounded mb-4">
+    <div className="w-full mx-auto p-4 bg-white rounded-[10px] mb-4 border-[1px]">
       <div className="border rounded relative  ">
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full text-center text-[#fcd700] font-bold text-2xl px-4 py-2 bg-[#203955] cursor-pointer hover:bg-white"
+          className="w-full text-center text-[#fcd700] font-black text-3xl px-4 py-2 bg-[#203955] transition-all duration-200 cursor-pointer hover:bg-white hover:text-[#203955] "
         >
           {selectedBrigade ? selectedBrigade.name : 'Оберіть підрозділ'}
         </button>
