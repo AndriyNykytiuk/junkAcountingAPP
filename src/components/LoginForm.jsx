@@ -4,33 +4,35 @@ import identity from '../img/DSNSlogo.svg'
 const LoginForm = ({ onLogin }) => {
   const [error, setError] = useState('');
 
- const handleLogin = async (e) => {
-  e.preventDefault();
-  setError('');
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
 
-  const formData = new FormData(e.target);
-  const username = formData.get('username');
-  const password = formData.get('password');
+    const formData = new FormData(e.target);
+    const username = formData.get('username');
+    const password = formData.get('password');
 
-  try {
-    const res = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
+    try {
+        const API_URL = import.meta.env.VITE_API_URL;
 
-    if (!res.ok) throw new Error('Помилка авторизації');
+        const res = await fetch(`${API_URL}/api/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
 
-    const data = await res.json();
-    localStorage.setItem('sessionId', data.sessionId);
-    localStorage.setItem('userBrigadeId', data.brigadeId);
-    onLogin(data);
-    console.log('Успішний логін, sessionId:', data.sessionId);
-  } catch (err) {
-    setError('Невірний логін або пароль');
-  }
-};
+      if (!res.ok) throw new Error('Помилка авторизації');
 
+      const data = await res.json();
+      localStorage.setItem('sessionId', data.sessionId);
+      localStorage.setItem('userBrigadeId', data.brigadeId);
+      onLogin(data); 
+      console.log('Успішний логін, sessionId:', data.sessionId);
+      console.log('Response data:', data);
+    } catch (err) {
+      setError('Невірний логін або пароль');
+    }
+  };
 
   return (
       <div className='bg-gray-100 h-screen flex flex-col justify-center items-center '>
