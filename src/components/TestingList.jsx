@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { RiEdit2Line } from "react-icons/ri";
 import { MdOutlineSaveAs } from "react-icons/md";
 import AddTest from './AddTest';
-import TitleTesting from './titleTesting';
+import TitleTesting from './TitleTesting';
 
 const formatDate = (timestamp) => {
   const date = new Date(timestamp);
