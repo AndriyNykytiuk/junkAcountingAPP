@@ -12,7 +12,8 @@ export default defineConfig({
     proxy: {
       '/api': {
         target: 'https://rasp.ivkeen.keenetic.link',
-        changeOrigin: true,
+         changeOrigin: true,
+    
        
       },
     },

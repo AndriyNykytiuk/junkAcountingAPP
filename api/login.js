@@ -1,21 +1,20 @@
-// /api/login.js
 export default async function handler(req, res) {
-  const BACKEND_URL = 'https://rasp.ivkeen.keenetic.link/api/login'; // твій Java бекенд
+  const BACKEND_URL = 'https://rasp.ivkeen.keenetic.link/api/login'; // URL твого Java-бекенду
 
   if (req.method === 'POST') {
     try {
-      // Пересилаємо тіло запиту до Java-бекенду
+      // Отримуємо тіло запиту (Vercel парсить body автоматично, але для urlencoded переконайся)
+      const { username, password } = req.body;  // Якщо body вже об'єкт, або парсинг якщо string
+
       const response = await fetch(BACKEND_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(req.body),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();
-
-      // Повертаємо відповідь фронтенду
       res.status(response.status).json(data);
     } catch (err) {
       console.error(err);
