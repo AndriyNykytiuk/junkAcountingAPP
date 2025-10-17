@@ -17,7 +17,7 @@ const EquipmentList = ({ onEquipmentSelect }) => {
     const fetchEquipments = async () => {
       try {
         const sessionId = localStorage.getItem('sessionId');
-        const res = await fetch('https://rasp.ivkeen.keenetic.link/api/testing/equipments', {
+        const res = await fetch('/api/testing/equipments', {
           method: 'GET',
           headers: {
             'session-id': sessionId,

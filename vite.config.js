@@ -8,11 +8,12 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: '/junkAcountingAPP/',
    server: {
+    port: 5174,
     proxy: {
       '/api': {
-        target: 'http://rasp.ivkeen.keenetic.link',
+        target: 'https://rasp.ivkeen.keenetic.link',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+       
       },
     },
   }

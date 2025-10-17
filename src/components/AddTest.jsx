@@ -38,7 +38,7 @@ const AddTest = ({ brigadeId, equipmentId,setRefreshTrigger}) => {
 
             try{
                 const sessionId=localStorage.getItem('sessionId');
-                const res=await fetch('https://rasp.ivkeen.keenetic.link/api/testing/brigade/'+brigadeId+'/equipment/'+equipmentId,{
+                const res=await fetch('/api/testing/brigade/'+brigadeId+'/equipment/'+equipmentId,{
                     method:'POST',
                     headers:{
                         'session-id':sessionId,

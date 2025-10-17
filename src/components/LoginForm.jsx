@@ -13,9 +13,15 @@ const LoginForm = ({ onLogin }) => {
     const password = formData.get('password');
 
     try {
-      const res = await fetch(`https://rasp.ivkeen.keenetic.link/api/login?username=${username}&password=${password}`, {
+      const res = await fetch('/api/login', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({ username, password }).toString(),
       });
+
+
 
       if (!res.ok) throw new Error('Помилка авторизації');
 

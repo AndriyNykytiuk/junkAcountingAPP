@@ -22,7 +22,7 @@ const TestingList = ({ brigadeId, equipmentId,setRefreshTrigger,refreshTrigger, 
     setIsLoading(true);
     try {
       const sessionId = localStorage.getItem('sessionId');
-      const res = await fetch(`https://rasp.ivkeen.keenetic.link/api/testing/brigade/${brigadeId}/equipment/${equipmentId}`, {
+      const res = await fetch(`/api/testing/brigade/${brigadeId}/equipment/${equipmentId}`, {
         method: 'GET',
         headers: {
           'session-id': sessionId,
@@ -48,7 +48,7 @@ console.log('TestingList props - brigadeId:', brigadeId, 'equipmentId:', equipme
   
     try {
       const sessionId = localStorage.getItem('sessionId');
-      const res = await fetch(`https://rasp.ivkeen.keenetic.link/api/testing/brigade/${brigadeId}/equipment/${equipmentId}`, {
+      const res = await fetch(`/api/testing/brigade/${brigadeId}/equipment/${equipmentId}`, {
         method: 'PUT',
         headers: {
           'session-id': sessionId,
