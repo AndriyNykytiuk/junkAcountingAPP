@@ -13,6 +13,7 @@ const Dashboard = ({ responseData, onBrigadeSelect}) => {
     }
     console.log('selectedBrigadeId:', brigade.id);
   };
+ 
 
   return (
     <div className="w-full mx-auto p-4 bg-white rounded-[10px] mb-4 border-[1px]">
