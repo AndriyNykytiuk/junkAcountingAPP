@@ -13,7 +13,7 @@ const NextDateChecker = ({ brigadeId, refreshTrigger }) => {
         const sessionId = localStorage.getItem('sessionId');
       
 
-        const response = await fetch('http://rasp.ivkeen.keenetic.link/api/testing/equipments', {
+        const response = await fetch('https://rasp.ivkeen.keenetic.link/api/testing/equipments', {
           method: 'GET',
           headers: {
             'session-id': sessionId,
