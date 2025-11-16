@@ -60,6 +60,8 @@ console.log('TestingList props - brigadeId:', brigadeId, 'equipmentId:', equipme
           testingResult: editedItem.testingResult,
           nextTestingDate: new Date(editedItem.nextTestingDate).getTime(),
           url: editedItem.url,
+          deviceName: editedItem.deviceName,
+          documentName: editedItem.documentName,
           // protocolTitle: item.protocolTitle || '',
         }),
       });
@@ -132,8 +134,8 @@ console.log('TestingList props - brigadeId:', brigadeId, 'equipmentId:', equipme
                <input
                   type="text"
                   placeholder="Назва протоколу"
-                  value={editedItem.protocolTitle || ''}
-                  onChange={(e) => setEditedItem({ ...editedItem, protocolTitle: e.target.value })}
+                  value={editedItem.documentName || ''}
+                  onChange={(e) => setEditedItem({ ...editedItem, documentName: e.target.value })}
                   className="border px-1 py-1 rounded mb-1"
                 />
               <input
@@ -158,7 +160,6 @@ console.log('TestingList props - brigadeId:', brigadeId, 'equipmentId:', equipme
               <p>{formatDate(item.testingDate)}</p>
               <p>{item.testingResult === 'passed' ? ' Пройдено' : item.testingResult === 'failed' ? ' Не пройдено' : ' Проходить випробування'}</p>
               <p>{formatDate(item.nextTestingDate)}</p>
-              <p className="text-sm italic">{item.protocolTitle || 'Без назви'}</p>
               <div>
               <a
                   href={item.url}
@@ -166,7 +167,7 @@ console.log('TestingList props - brigadeId:', brigadeId, 'equipmentId:', equipme
                   rel="noopener noreferrer"
                   className="text-[#202955] underline"
                 >
-                 {item.protocolTitle}
+                 {item.documentName}
                 </a> 
                 </div>            
               <div>
@@ -180,10 +181,12 @@ console.log('TestingList props - brigadeId:', brigadeId, 'equipmentId:', equipme
                     testingDate: new Date(item.testingDate).toISOString().split('T')[0],
                     testingResult: item.testingResult,
                     nextTestingDate: new Date(item.nextTestingDate).toISOString().split('T')[0],
+                    documentName: item.documentName || '',
+                    deviceName: item.deviceName || '',
                     url: item.url || '',
-                   // protocolTitle: item.protocolTitle || '',
-                  });}
-                }>
+                  });
+                }
+              }>
                 <RiEdit2Line className='cursor-pointer' />
               </button>
 

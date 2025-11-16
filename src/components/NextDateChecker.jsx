@@ -60,6 +60,7 @@ const upcomingTests = allTestingItems.filter(item => {
   }
   return false;
 });
+upcomingTests.sort((a, b) => a.nextTestingDate - b.nextTestingDate);
 
 setUpcomingTests(upcomingTests);
 console.log(' Тестування через 10 днів:', upcomingTests.map(item => ({
@@ -91,7 +92,7 @@ console.log(' Тестування через 10 днів:', upcomingTests.map(i
           <ul className="space-y-3">
             {upcomingTests.map((item, index) => (
               <li key={index} className="grid grid-cols-3 place-items-center bg-[#fcd600] opacity-90 shadow-sm p-2 border rounded">
-                <div>тут буде назва</div>
+                <div>{item.deviceName}</div>
                 <div>{item.deviceInventoryNumber}</div>
                 <div>{new Date(item.nextTestingDate).toLocaleDateString('uk-UA')}</div>
               </li>
