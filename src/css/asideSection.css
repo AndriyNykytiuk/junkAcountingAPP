@@ -1,0 +1,21 @@
+.aside-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Mobile - sidebar slides in from left */
+@media (max-width: 1023px) {
+  .aside-section {
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+  }
+}
+
+/* Desktop - normal layout */
+@media (min-width: 1024px) {
+  .aside-section {
+    position: relative;
+    transform: none !important;
+  }
+}

@@ -25,22 +25,37 @@ const LoginForm = ({ onLogin }) => {
       localStorage.setItem('sessionId', data.sessionId);
       localStorage.setItem('userBrigadeId', data.brigadeId);
       onLogin(data);
-      console.log('Успішний логін, sessionId:', data.sessionId);
-      console.log('Response data:', data);
-    } catch (err) {
+    } catch {
       setError('Невірний логін або пароль');
     }
   };
 
   return (
-    <div className='bg-gray-100 h-screen flex flex-col justify-center items-center'>
-      <div className='flex flex-col w-1/3 justify-center mb-6 p-7 bg-[#203955] items-center rounded shadow-md'>
-        <img src={identity} alt="Identity" className="h-32 w-32 object-contain mb-10" />
-        <form onSubmit={handleLogin} className="w-full flex flex-col justify-center mx-auto p-4 space-y-4 bg-[#203955] rounded shadow-md">
-          <input type="text" name="username" placeholder="Логін" className="w-full border px-3 py-2 rounded bg-white" required />
-          <input type="password" name="password" placeholder="Пароль" className="w-full border px-3 py-2 rounded bg-white" required />
-          <button type="submit" className="bg-[#fcd700] text-center text-black px-4 py-2 rounded cursor-pointer hover:font-bold">Авторизуватися</button>
-          {error && <p className="text-red-500">{error}</p>}
+    <div className='bg-gray-100 min-h-screen flex flex-col justify-center items-center p-4'>
+      <div className='flex flex-col w-full max-w-md md:max-w-lg lg:max-w-xl justify-center mb-6 p-4 md:p-7 bg-[#203955] items-center rounded shadow-md'>
+        <img src={identity} alt="Identity" className="h-24 w-24 md:h-32 md:w-32 object-contain mb-6 md:mb-10" />
+        <form onSubmit={handleLogin} className="w-full flex flex-col justify-center mx-auto p-3 md:p-4 space-y-3 md:space-y-4 bg-[#203955] rounded shadow-md">
+          <input
+            type="text"
+            name="username"
+            placeholder="Логін"
+            className="w-full border px-3 py-2 md:py-3 rounded bg-white text-sm md:text-base"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Пароль"
+            className="w-full border px-3 py-2 md:py-3 rounded bg-white text-sm md:text-base"
+            required
+          />
+          <button
+            type="submit"
+            className="bg-[#fcd700] text-center text-black px-4 py-2 md:py-3 rounded cursor-pointer hover:font-bold text-sm md:text-base font-medium transition-all"
+          >
+            Авторизуватися
+          </button>
+          {error && <p className="text-red-500 text-sm md:text-base text-center">{error}</p>}
         </form>
       </div>
     </div>

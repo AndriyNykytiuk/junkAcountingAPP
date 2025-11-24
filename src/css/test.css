@@ -1,0 +1,42 @@
+/* Tablet adaptation for TestingList */
+
+/* Mobile - full card layout */
+@media (max-width: 767px) {
+    .test-itm {
+        grid-template-columns: 1fr !important;
+    }
+
+    .edit-btn {
+        display: none !important;
+        position: relative !important;
+        margin: 10px auto 0 !important;
+    }
+
+    .save-btn {
+        position: relative !important;
+        margin: 10px auto 0 !important;
+    }
+}
+
+/* Tablet - same horizontal 6-column layout as desktop */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .test-itm {
+        grid-template-columns: repeat(6, 1fr) !important;
+    }
+
+    .edit-btn,
+    .save-btn {
+        position: absolute !important;
+        right: 12px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        margin: 0 !important;
+    }
+}
+
+/* Desktop - full 6 column grid */
+@media (min-width: 1024px) {
+    .test-itm {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr !important;
+    }
+}
