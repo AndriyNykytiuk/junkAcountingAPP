@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
-const EquipmentList = ({ onEquipmentSelect }) => {
+const EquipmentList = ({ onEquipmentSelect, isOpen, onToggle }) => {
   const [selectedEquipmentId, setSelectedEquipmentId] = useState(
     () => sessionStorage.getItem('selectedEquipmentId') || null
   );
   const [equipments, setEquipments] = useState([]);
   const [error, setError] = useState('');
-  const [testingList, setTestingList] = useState(false);
 
-  const openTestingList = () => {
-    setTestingList(prev => !prev);
+  // Internal toggle if onToggle not provided (fallback)
+  const handleToggle = () => {
+    if (onToggle) {
+      onToggle();
+    }
   };
 
   useEffect(() => {
@@ -35,31 +37,37 @@ const EquipmentList = ({ onEquipmentSelect }) => {
     fetchEquipments();
   }, []);
 
-  const handleEquipmentSelect = (id) => {
+  const handleEquipmentSelect = (id, name) => {
     setSelectedEquipmentId(id);
     if (typeof onEquipmentSelect === 'function') {
-      onEquipmentSelect(id);
+      onEquipmentSelect(id, name);
     }
   };
 
   return (
     <div className="w-full mx-auto p-2 md:p-4 overflow-hidden max-w-full">
       <h2
-        className={`text-base md:text-lg lg:text-xl text-center cursor-pointer font-bold mb-4 p-2 border-[1px] hover:translate-x-1 transition-all duration-200 rounded-[10px] hover:border-[1px] hover:rounded-[10px] hover:text-[#fcd600] break-words ${testingList ? 'bg-[#203955] border-[2px] text-white' : ''}`}
-        onClick={openTestingList}
+        className={`text-base md:text-lg lg:text-xl text-center cursor-pointer font-bold mb-4 p-3 border-2 transition-all duration-200 rounded-lg hover:border-[#fcd600] hover:text-[#203955] hover:shadow-md break-words ${isOpen
+            ? 'bg-[#203955] text-white border-[#203955]'
+            : 'bg-white text-[#203955] border-[#203955]'
+          }`}
+        onClick={handleToggle}
       >
         Випробування
       </h2>
       {error && <p className="text-red-500 text-xs md:text-sm break-words">{error}</p>}
-      {testingList && (
-        <ul className="space-y-2 overflow-y-auto max-h-[60vh]">
+      {isOpen && (
+        <ul className="space-y-3 overflow-y-auto max-h-[60vh] pr-1">
           {equipments.map((item) => (
             <li
               key={item.id}
-              className={`cursor-pointer text-center px-2 md:px-3 lg:px-4 py-2 rounded transform transition-all duration-200 text-xs md:text-sm lg:text-base break-words overflow-hidden
-                ${item.id === selectedEquipmentId ? 'bg-[#fcd600] font-bold translate-x-2 md:translate-x-4' : 'bg-gray-100 hover:translate-x-2 md:hover:translate-x-4'}
+              className={`cursor-pointer text-center px-3 py-3 rounded-lg border-2 transition-all duration-200 text-xs md:text-sm lg:text-base break-words overflow-hidden shadow-sm hover:shadow-md
+                ${item.id === selectedEquipmentId
+                  ? 'bg-[#fcd600] border-[#fcd600] text-[#203955] font-bold scale-105'
+                  : 'bg-white border-[#203955] text-[#203955] hover:border-[#fcd600] hover:scale-102'
+                }
               `}
-              onClick={() => handleEquipmentSelect(item.id)}
+              onClick={() => handleEquipmentSelect(item.id, item.name)}
             >
               {item.name}
             </li>

@@ -84,27 +84,17 @@ const TestingList = ({ brigadeId, equipmentId, setRefreshTrigger, refreshTrigger
     return '';
   };
 
-  if (isLoading) return <p className="p-4">Завантаження...</p>;
+  if (isLoading) return <p className="p-4">Оберіть що вас цікавить</p>;
   if (error) return <p className="text-red-500 p-4">{error}</p>;
   if (data.length === 0) return <p className="p-4 text-center text-lg md:text-xl text-gray-500">Підрозділ поки що не має такого обладнання.</p>;
 
   return (
     <div className="mx-auto w-full p-2 md:p-4">
-      {/* Desktop/Tablet header - hidden only on mobile */}
-      <div className="hidden md:grid title grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] gap-5 text-[#202955] items-center justify-between text-center mb-4 font-bold border-b pb-2 text-sm">
-        <p><strong>Інвентарний<br />номер:</strong></p>
-        <p><strong>Дата<br />Випробування:</strong></p>
-        <p><strong>Результат<br />випробувань:</strong></p>
-        <p><strong>Дата наступного<br />Випробування:</strong></p>
-        <p><strong>Акт / Протокол</strong></p>
-        <p><strong>Редагувати</strong></p>
-      </div>
-
-      <ul className="space-y-4">
+      <div className="space-y-4">
         {data.map((item) =>
           editId === item.testingId ? (
             // Edit mode - responsive
-            <li key={item.testingId} className={`test-itm grid grid-cols-1 md:grid-cols-6 border p-3 md:p-4 rounded shadow-sm gap-3 md:gap-5 mb-4 relative ${bgColor(editedItem.testingResult)}`}>
+            <div key={item.testingId} className={`test-itm grid grid-cols-1 md:grid-cols-6 border-2 border-[#203955] p-3 md:p-4 rounded-lg shadow-md gap-3 md:gap-5 mb-4 relative ${bgColor(editedItem.testingResult)}`}>
               <div className="flex flex-col md:block">
                 <label className="text-xs font-bold mb-1 md:hidden">Інвентарний номер:</label>
                 <p className="text-sm md:text-base">{editedItem.deviceInventoryNumber}</p>
@@ -167,64 +157,87 @@ const TestingList = ({ brigadeId, equipmentId, setRefreshTrigger, refreshTrigger
               >
                 <MdOutlineSaveAs />
               </button>
-            </li>
+            </div>
           ) : (
-            // View mode - responsive card layout on mobile, 6-col grid on tablet/desktop
-            <li key={item.testingId} className={`test-itm grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] gap-3 md:gap-5 w-full border p-3 md:p-4 rounded shadow-sm text-[#202955] font-bold text-center mb-4 relative ${bgColor(item.testingResult)}`}>
-              <div className="flex justify-between md:block">
-                <span className="text-xs font-bold md:hidden">Інв. номер:</span>
-                <p className='cursor-pointer text-sm md:text-base'>{item.deviceInventoryNumber}</p>
-              </div>
+            // View mode - single row with colored background
+            <div
+              key={item.testingId}
+              className={`test-itm border-2 border-[#203955] rounded-lg p-3 md:p-4 shadow-md hover:shadow-lg transition-all duration-200 mb-3 ${item.testingResult === 'passed'
+                ? 'bg-green-50 hover:bg-green-100'
+                : item.testingResult === 'failed'
+                  ? 'bg-red-50 hover:bg-red-100'
+                  : 'bg-yellow-50 hover:bg-yellow-100'
+                }`}
+            >
+              <div className="flex flex-col md:flex-row md:items-center gap-3 md:gap-4">
+                <div className="flex justify-between items-center md:flex-col md:items-start md:flex-1">
+                  <span className="font-semibold text-gray-600 text-xs">Інв. номер:</span>
+                  <span className="text-[#203955] font-bold text-sm md:text-base">{item.deviceInventoryNumber}</span>
+                </div>
 
-              <div className="flex justify-between md:block">
-                <span className="text-xs font-bold md:hidden">Дата випробування:</span>
-                <p className="text-sm md:text-base">{formatDate(item.testingDate)}</p>
-              </div>
+                <div className="flex justify-between items-center md:flex-col md:items-start md:flex-1">
+                  <span className="font-semibold text-gray-600 text-xs">Дата випробування:</span>
+                  <span className="font-medium text-sm md:text-base">{formatDate(item.testingDate)}</span>
+                </div>
 
-              <div className="flex justify-between md:block">
-                <span className="text-xs font-bold md:hidden">Результат:</span>
-                <p className="text-sm md:text-base">{item.testingResult === 'passed' ? 'Пройдено' : item.testingResult === 'failed' ? 'Не пройдено' : 'Проходить випробування'}</p>
-              </div>
+                <div className="flex justify-between items-center md:flex-col md:items-start md:flex-1">
+                  <span className="font-semibold text-gray-600 text-xs">Результат:</span>
+                  <span className={`font-bold text-sm md:text-base ${item.testingResult === 'passed'
+                    ? 'text-green-700'
+                    : item.testingResult === 'failed'
+                      ? 'text-red-700'
+                      : 'text-yellow-700'
+                    }`}>
+                    {item.testingResult === 'passed'
+                      ? '✓ Пройдено'
+                      : item.testingResult === 'failed'
+                        ? '✗ Не пройдено'
+                        : '⏳ Проходить випробування'}
+                  </span>
+                </div>
 
-              <div className="flex justify-between md:block">
-                <span className="text-xs font-bold md:hidden">Наступне випробування:</span>
-                <p className="text-sm md:text-base">{formatDate(item.nextTestingDate)}</p>
-              </div>
+                <div className="flex justify-between items-center md:flex-col md:items-start md:flex-1">
+                  <span className="font-semibold text-gray-600 text-xs">Наступне випробування:</span>
+                  <span className="font-medium text-sm md:text-base">{formatDate(item.nextTestingDate)}</span>
+                </div>
 
-              <div className="flex justify-between md:block">
-                <span className="text-xs font-bold md:hidden">Документ:</span>
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#202955] underline text-sm md:text-base"
-                >
-                  {item.documentName}
-                </a>
-              </div>
+                <div className="flex justify-between items-center md:flex-col md:items-start md:flex-1">
+                  <span className="font-semibold text-gray-600 text-xs">Документ:</span>
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#203955] underline hover:text-[#fcd600] transition-colors text-sm md:text-base font-medium truncate max-w-[150px] md:max-w-none"
+                  >
+                    {item.documentName}
+                  </a>
+                </div>
 
-              <button
-                title='Редагувати'
-                className="text-[#202955] text-xl md:text-2xl transition-all py-1 rounded cursor-pointer md:absolute md:right-12 md:top-1/2 md:transform md:-translate-y-1/2 hover:text-2xl md:hover:text-3xl transition-all duration-200 mt-2 md:mt-0"
-                onClick={() => {
-                  setEditId(item.testingId);
-                  setEditedItem({
-                    deviceInventoryNumber: item.deviceInventoryNumber,
-                    testingDate: new Date(item.testingDate).toISOString().split('T')[0],
-                    testingResult: item.testingResult,
-                    nextTestingDate: new Date(item.nextTestingDate).toISOString().split('T')[0],
-                    documentName: item.documentName || '',
-                    deviceName: item.deviceName || '',
-                    url: item.url || '',
-                  });
-                }}
-              >
-                <RiEdit2Line className='cursor-pointer edit-btn mx-auto' />
-              </button>
-            </li>
+                <div className="flex items-center justify-center md:justify-end">
+                  <button
+                    title='Редагувати'
+                    className="text-[#203955] text-xl md:text-2xl py-2 px-4 rounded-lg cursor-pointer hover:bg-[#fcd600] hover:text-white hover:scale-110 transition-all duration-200"
+                    onClick={() => {
+                      setEditId(item.testingId);
+                      setEditedItem({
+                        deviceInventoryNumber: item.deviceInventoryNumber,
+                        testingDate: new Date(item.testingDate).toISOString().split('T')[0],
+                        testingResult: item.testingResult,
+                        nextTestingDate: new Date(item.nextTestingDate).toISOString().split('T')[0],
+                        documentName: item.documentName || '',
+                        deviceName: item.deviceName || '',
+                        url: item.url || '',
+                      });
+                    }}
+                  >
+                    <RiEdit2Line className='cursor-pointer edit-btn' />
+                  </button>
+                </div>
+              </div>
+            </div>
           )
         )}
-      </ul>
+      </div>
     </div>
   );
 };

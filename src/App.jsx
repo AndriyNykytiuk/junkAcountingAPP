@@ -11,16 +11,31 @@ const App = () => {
   const [responseData, setResponseData] = useState(null);
   const [selectedBrigadeId, setSelectedBrigadeId] = useState(null);
   const [selectedEquipmentId, setSelectedEquipmentId] = useState(null);
+  const [selectedEquipmentName, setSelectedEquipmentName] = useState(null);
   const [refreshTrigger, setRefreshTrigger] = useState(Date.now());
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isSuperAdmin = Array.isArray(responseData?.detachments);
 
   useEffect(() => {
-    if (responseData?.brigadeId) {
+    // Only auto-set brigade ID if user is NOT a super admin (i.e. they are bound to a single brigade)
+    // If they are super admin (have detachments), we wait for them to select in dashboard
+    if (responseData?.brigadeId && !Array.isArray(responseData?.detachments)) {
       setSelectedBrigadeId(responseData.brigadeId);
     }
   }, [responseData]);
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.removeItem('userBrigadeId');
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(prev => !prev);
@@ -40,7 +55,12 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-[#dedede] overflow-x-hidden max-w-full">
-      <Header isMenuOpen={isMenuOpen} onMenuToggle={toggleMenu} />
+      <Header
+        isMenuOpen={isMenuOpen}
+        onMenuToggle={toggleMenu}
+        selectedBrigadeName={responseData?.detachments?.flatMap(d => d.brigades).find(b => b.id === selectedBrigadeId)?.name}
+        selectedEquipmentName={selectedEquipmentName}
+      />
 
       <div className="flex gap-2 md:gap-4 p-2 md:p-4 relative overflow-x-hidden max-w-full">
         {/* Overlay для закриття меню при кліку поза ним */}
@@ -66,16 +86,32 @@ const App = () => {
           {(isSuperAdmin || !responseData.brigadeId) && (
             <Dashboard
               responseData={responseData}
+              selectedBrigadeId={selectedBrigadeId}
               onBrigadeSelect={(id) => {
                 setSelectedBrigadeId(id);
-                closeMenu();
               }}
             />
           )}
-          <Aside onEquipmentSelect={(id) => {
+          <Aside onEquipmentSelect={(id, name) => {
             setSelectedEquipmentId(id);
+            setSelectedEquipmentName(name);
             closeMenu();
-          }} />
+          }}
+            onTransferSelect={() => {
+              setSelectedEquipmentId('transfer');
+              setSelectedEquipmentName('Передача майна');
+              closeMenu();
+            }}
+            onLiquidsSelect={() => {
+              setSelectedEquipmentId('liquids');
+              setSelectedEquipmentName('Засоби пожежогасіння');
+              closeMenu();
+            }}
+            onTestingSelect={() => {
+              setSelectedEquipmentId('testing');
+              setSelectedEquipmentName('Випробування');
+              closeMenu();
+            }} />
         </div>
 
         {/* Main content */}

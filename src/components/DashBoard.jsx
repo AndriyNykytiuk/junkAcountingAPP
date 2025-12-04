@@ -1,9 +1,23 @@
 import React, { useState } from 'react';
 import EquipmentList from './EquipmentList';
 
-const Dashboard = ({ responseData, onBrigadeSelect }) => {
+const Dashboard = ({ responseData, onBrigadeSelect, selectedBrigadeId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedBrigade, setSelectedBrigade] = useState(null);
+
+  // Sync selectedBrigade with selectedBrigadeId prop
+  React.useEffect(() => {
+    if (selectedBrigadeId && responseData?.detachments) {
+      const brigade = responseData.detachments
+        .flatMap(d => d.brigades)
+        .find(b => b.id === selectedBrigadeId);
+      if (brigade) {
+        setSelectedBrigade(brigade);
+      }
+    } else {
+      setSelectedBrigade(null);
+    }
+  }, [selectedBrigadeId, responseData]);
 
   const handleBrigadeClick = (brigade) => {
     setSelectedBrigade(brigade);
